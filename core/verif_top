@@ -1,0 +1,81 @@
+// Company           :   tud                      
+// Author            :   koke22            
+// E-Mail            :   <email>                    
+//                    			
+// Filename          :   verif_top.v                
+// Project Name      :   prz    
+// Subproject Name   :   gf28_template    
+// Description       :   <short description>            
+//
+// Create Date       :   Sun Jul 16 12:37:50 2023 
+// Last Change       :   $Date: 2023-07-16 14:39:19 +0200 (Sun, 16 Jul 2023) $
+// by                :   $Author: koke22 $                  			
+//------------------------------------------------------------
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 16.07.2023 11:39:34
+// Design Name: 
+// Module Name: verif_top
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+`timescale 1ns / 1ps
+
+module verif_top (
+  input clk_i,
+  input a_reset_l,
+  input busy_control
+);
+  
+  wire w_bus_en;
+  wire w_bus_we;
+  wire w_bus_rdy;
+  wire [1:0] w_bus_size;
+  wire [15:0] w_bus_addr;
+  wire [31:0] w_bus_write_data;
+  wire [31:0] w_bus_read_data;
+  wire [1:0] w_intr_ack_o; // ### dummy wire
+
+  
+  per1_ext_memory per1_ext_mem_inst (
+    .clk_i(clk_i),
+    .rst_n(a_reset_l),
+    .size_select(w_bus_size),
+    .busy_control(busy_control),
+    .ext_mem_1_en(1'b1),
+    .addr(w_bus_addr),
+    .write_data(w_bus_write_data),
+    .read_data(w_bus_read_data),
+    .wr_en(w_bus_we),
+    .rd_en(w_bus_en),
+    .slave_ready(w_bus_rdy)
+  );
+  
+  dobby_soc dobby_soc_inst (
+    .clk_i(clk_i),
+    .a_reset_l_i(a_reset_l),
+    .bus_en_o(w_bus_en),
+    .bus_we_o(w_bus_we),
+    .bus_rdy_i(w_bus_rdy),
+    .bus_size_o(w_bus_size),
+    .bus_addr_o(w_bus_addr),
+    .bus_write_data_o(w_bus_write_data),
+    .bus_read_data_i(w_bus_read_data),
+    .intr_h_i(2'b00),
+    .intr_ack_o(w_intr_ack_o)
+  );
+ 
+  
+endmodule

@@ -1,0 +1,10 @@
+#placeInstance <hierarchical_inst_name> <x_org> <y_org> <orientation>
+#e.g.
+placeInstance dobby_soc_i/mc_dut/pram_in1/HM_1P_GF28SLP_1024x32_1cr_0 250 250 R90
+placeInstance dobby_soc_i/mc_dut/pram_in1/HM_1P_GF28SLP_1024x32_1cr_1 250 550 R90
+placeInstance dobby_soc_i/mc_dut/pram_in1/HM_1P_GF28SLP_1024x32_1cr_2 250 850 R90
+placeInstance dobby_soc_i/mc_dut/pram_in1/HM_1P_GF28SLP_1024x32_1cr_3 250 1150 R90
+
+addRoutingHalo -allBlocks -space 0.01 -top M5 -bottom M1
+
+addHaloToBlock $obs_overhang $obs_overhang $obs_overhang $obs_overhang -allMacro
