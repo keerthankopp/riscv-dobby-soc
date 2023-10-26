@@ -1,0 +1,53 @@
+// Company           :   tud                      
+// Author            :   veni22            
+// E-Mail            :   <email>                    
+//                    			
+// Filename          :   tb_verif_top.v                
+// Project Name      :   prz    
+// Subproject Name   :   gf28_template    
+// Description       :   <short description>            
+//
+// Create Date       :   Thu Jul 20 22:03:25 2023 
+// Last Change       :   $Date$
+// by                :   $Author$                  			
+//------------------------------------------------------------
+`timescale 1ns/10ps
+module tb_verif_top (
+);
+
+ 
+  reg  clk_i ;
+  reg  a_reset_l ;
+  reg  busy_control ;
+  
+ 
+  verif_top verif_top_i (
+		.clk_i (clk_i ),
+		.a_reset_l (a_reset_l ),
+		.busy_control (busy_control )
+        );
+
+ parameter CLKPERIODE = 100;
+
+ initial clk_i = 1'b1;
+
+
+  always #(CLKPERIODE/2.0) clk_i = !clk_i;
+
+  initial begin
+      a_reset_l = 1'b0;
+      busy_control = 1'b1;
+      #(CLKPERIODE);
+      a_reset_l = 1'b1;
+      #(16500*CLKPERIODE);
+	busy_control = 1'b0;
+#(CLKPERIODE);
+busy_control = 1'b1;
+	
+  end
+
+  // Template for testcase specific pattern generation
+  // File has to be situated in simulation/<simulator_name>/[testcase] directory
+  `include "testcase.v"
+
+endmodule

@@ -1,0 +1,331 @@
+// Company           :   tud                      
+// Author            :   paja22            
+// E-Mail            :   <email>                    
+//                    			
+// Filename          :   memory_controller.v                
+// Project Name      :   prz    
+// Subproject Name   :   gf28_template    
+// Description       :   <short description>            
+//
+// Create Date       :   Tue Sep 12 10:55:45 2023 
+// Last Change       :   $Date$
+// by                :   $Author$                  			
+//------------------------------------------------------------
+
+//Fill in testcase specific pattern generation
+initial begin
+    //#1
+    //$finish();
+    
+	// for size select 2
+	
+//case-1 fetch instruction from pram
+	load_when_reset = 0; // Enable load when reset
+	size_select = 2'b10; // Set size_select to 1 (32-bit)
+        instr_fetch_enable = 1; // Enable instruction fetch
+        instr_addr = 32'h00000000; // Set instruction address to 0
+        //ls_addr = 32'h00000000; // Set load/store address to 0
+        //ls_write_data = 32'h00000000; // Set load/store write data to 0
+        ls_mem_access = 0; // Access pram
+        wr_en = 0; // Disable write
+        rd_en = 1; // Enable read
+	#5;
+	pram_read_data=32'h12345678; //check instruction is same or not
+        //addr_counter = 16'h0000; // Set address counter to 0
+        #5; // Wait for some time
+	
+//case-2 fetch instruction from bus
+	load_when_reset = 0; // Enable load when reset
+	size_select = 2'b10; // Set size_select to 1 (32-bit)
+        instr_fetch_enable = 1; // Enable instruction fetch
+        instr_addr = 32'h00004006; // Set instruction address to 0
+        //ls_addr = 32'h00000000; // Set load/store address to 0
+        //ls_write_data = 32'h00000000; // Set load/store write data to 0
+        ls_mem_access = 0; // Access pram
+        wr_en = 0; // Disable write
+        rd_en = 1; // Enable read
+	#15;
+	bus_ack=1;
+	bus_read_data=32'h98754321;   //check instruction is same or not
+        //addr_counter = 16'h0000; // Set address counter to 0
+        
+        #5; // Wait for some time
+	bus_ack=0;
+	
+//case-3 load from pram
+	
+	size_select = 2'b10; // Set size_select to 1 (32-bit)
+        instr_fetch_enable = 0; // Enable instruction fetch
+        //instr_addr[31:0] = 4006; // Set instruction address to 0
+        ls_addr[31:0] = 0000; // Set load/store address to 0
+        //ls_write_data = 32'h00000000; // Set load/store write data to 0
+        ls_mem_access = 1; // Access pram
+        wr_en = 0; // Disable write
+        rd_en = 1; // Enable read
+	#5;
+	pram_read_data=123;   // check ls_read data
+        //addr_counter = 16'h0000; // Set address counter to 0
+        //load_when_reset = 1; // Enable load when reset
+        #5; // Wait for some time
+
+	
+//case-4 load from bus
+	
+	size_select = 2'b10; // Set size_select to 1 (32-bit)
+        instr_fetch_enable = 0; // Enable instruction fetch
+        //instr_addr[31:0] = 4006; // Set instruction address to 0
+        ls_addr = 32'h00004006; // Set load/store address to 0
+        //ls_write_data = 32'h00000000; // Set load/store write data to 0
+        ls_mem_access = 1; // Access pram
+        wr_en = 0; // Disable write
+        rd_en = 1; // Enable read
+	#15;
+	bus_read_data=999;   // check ls_read data
+        //addr_counter = 16'h0000; // Set address counter to 0
+        //load_when_reset = 0; // Enable load when reset
+        #5; // Wait for some time
+	
+//case-5 store to pram
+	
+	size_select = 2'b10; // Set size_select to 1 (32-bit)
+        instr_fetch_enable = 0; // Enable instruction fetch
+        //instr_addr[31:0] = 4006; // Set instruction address to 0
+        ls_addr = 32'h00000000; // Set load/store address to 0
+        ls_write_data = 10; // Set load/store write data to 0
+        ls_mem_access = 1; // Access pram
+        wr_en = 1; // Disable write
+        rd_en = 0; // Enable read
+	//bus_read_data=999;
+        //addr_counter = 16'h0000; // Set address counter to 0
+        load_when_reset = 0; // Enable load when reset
+	// check pram write dat is equal to ls_write data
+       #10; //#5; // Wait for some time 
+	
+//case-6 store to bus
+	
+	size_select = 2'b10; // Set size_select to 1 (32-bit)
+        instr_fetch_enable = 0; // Enable instruction fetch
+        //instr_addr[31:0] = 4006; // Set instruction address to 0
+        ls_addr = 32'h00004006; // Set load/store address to 0
+        ls_write_data = 15; // Set load/store write data to 0
+        ls_mem_access = 1; // Access pram
+        wr_en = 1; // Disable write
+        rd_en = 0; // Enable read
+	//bus_read_data=999;
+        //addr_counter = 16'h0000; // Set address counter to 0
+        load_when_reset = 0; // Enable load when reset
+	// check bus write data
+        #15; // Wait for some time
+	bus_ack=1;
+	#5;
+	bus_ack=0;
+
+
+
+	// for size select 1
+	
+//case-1 fetch instruction from pram
+	load_when_reset = 0; // Enable load when reset
+	size_select = 2'b01; // Set size_select to 1 (32-bit)
+        instr_fetch_enable = 1; // Enable instruction fetch
+        instr_addr = 32'h00000000; // Set instruction address to 0
+        //ls_addr = 32'h00000000; // Set load/store address to 0
+        //ls_write_data = 32'h00000000; // Set load/store write data to 0
+        ls_mem_access = 0; // Access pram
+        wr_en = 0; // Disable write
+        rd_en = 1; // Enable read
+	#5;
+	pram_read_data=32'h12345678; //check instruction is same or not
+        //addr_counter = 16'h0000; // Set address counter to 0
+        #5; // Wait for some time
+	
+//case-2 fetch instruction from bus
+	load_when_reset = 0; // Enable load when reset
+	size_select = 2'b01; // Set size_select to 1 (32-bit)
+        instr_fetch_enable = 1; // Enable instruction fetch
+        instr_addr = 32'h00004006; // Set instruction address to 0
+        //ls_addr = 32'h00000000; // Set load/store address to 0
+        //ls_write_data = 32'h00000000; // Set load/store write data to 0
+        ls_mem_access = 0; // Access pram
+        wr_en = 0; // Disable write
+        rd_en = 1; // Enable read
+	#15;
+	bus_ack=1;
+	bus_read_data=32'h98754321;   //check instruction is same or not
+        //addr_counter = 16'h0000; // Set address counter to 0
+        #5; // Wait for some time
+	bus_ack=0;
+	
+//case-3 load from pram
+	
+	size_select = 2'b01; // Set size_select to 1 (32-bit)
+        instr_fetch_enable = 0; // Enable instruction fetch
+        //instr_addr[31:0] = 4006; // Set instruction address to 0
+        ls_addr[31:0] = 0000; // Set load/store address to 0
+        //ls_write_data = 32'h00000000; // Set load/store write data to 0
+        ls_mem_access = 1; // Access pram
+        wr_en = 0; // Disable write
+        rd_en = 1; // Enable read
+	#5;
+	pram_read_data=123;   // check ls_read data
+        //addr_counter = 16'h0000; // Set address counter to 0
+        //load_when_reset = 1; // Enable load when reset
+        #5; // Wait for some time
+
+	
+//case-4 load from bus
+	
+	size_select = 2'b01; // Set size_select to 1 (32-bit)
+        instr_fetch_enable = 0; // Enable instruction fetch
+        //instr_addr[31:0] = 4006; // Set instruction address to 0
+        ls_addr = 32'h00004006; // Set load/store address to 0
+        //ls_write_data = 32'h00000000; // Set load/store write data to 0
+        ls_mem_access = 1; // Access pram
+        wr_en = 0; // Disable write
+        rd_en = 1; // Enable read
+	#15;
+	bus_read_data=999;   // check ls_read data
+        //addr_counter = 16'h0000; // Set address counter to 0
+        //load_when_reset = 0; // Enable load when reset
+        #5; // Wait for some time
+	
+//case-5 store to pram
+	
+	size_select = 2'b01; // Set size_select to 1 (32-bit)
+        instr_fetch_enable = 0; // Enable instruction fetch
+        //instr_addr[31:0] = 4006; // Set instruction address to 0
+        ls_addr = 32'h00000000; // Set load/store address to 0
+        ls_write_data = 10; // Set load/store write data to 0
+        ls_mem_access = 1; // Access pram
+        wr_en = 1; // Disable write
+        rd_en = 0; // Enable read
+	//bus_read_data=999;
+        //addr_counter = 16'h0000; // Set address counter to 0
+        load_when_reset = 0; // Enable load when reset
+	// check pram write dat is equal to ls_write data
+       #10; //#5; // Wait for some time 
+	
+//case-6 store to bus
+	
+	size_select = 2'b01; // Set size_select to 1 (32-bit)
+        instr_fetch_enable = 0; // Enable instruction fetch
+        //instr_addr[31:0] = 4006; // Set instruction address to 0
+        ls_addr = 32'h00004006; // Set load/store address to 0
+        ls_write_data = 15; // Set load/store write data to 0
+        ls_mem_access = 1; // Access pram
+        wr_en = 1; // Disable write
+        rd_en = 0; // Enable read
+	//bus_read_data=999;
+        //addr_counter = 16'h0000; // Set address counter to 0
+        load_when_reset = 0; // Enable load when reset
+	// check bus write data
+        #15; // Wait for some time
+	bus_ack=1;
+	#5;
+	bus_ack=0;
+	
+
+	// for size select 0
+	
+//case-1 fetch instruction from pram
+	load_when_reset = 0; // Enable load when reset
+	size_select = 2'b00; // Set size_select to 1 (32-bit)
+        instr_fetch_enable = 1; // Enable instruction fetch
+        instr_addr = 32'h00000000; // Set instruction address to 0
+        //ls_addr = 32'h00000000; // Set load/store address to 0
+        //ls_write_data = 32'h00000000; // Set load/store write data to 0
+        ls_mem_access = 0; // Access pram
+        wr_en = 0; // Disable write
+        rd_en = 1; // Enable read
+	#5;
+	pram_read_data=32'h12345678; //check instruction is same or not
+        //addr_counter = 16'h0000; // Set address counter to 0
+        #5; // Wait for some time
+	
+//case-2 fetch instruction from bus
+	load_when_reset = 0; // Enable load when reset
+	size_select = 2'b00; // Set size_select to 1 (32-bit)
+        instr_fetch_enable = 1; // Enable instruction fetch
+        instr_addr = 32'h00004006; // Set instruction address to 0
+        //ls_addr = 32'h00000000; // Set load/store address to 0
+        //ls_write_data = 32'h00000000; // Set load/store write data to 0
+        ls_mem_access = 0; // Access pram
+        wr_en = 0; // Disable write
+        rd_en = 1; // Enable read
+	#15;
+	bus_ack=1;
+	bus_read_data=32'h98754321;   //check instruction is same or not
+        //addr_counter = 16'h0000; // Set address counter to 0
+        
+        #5; // Wait for some time
+	bus_ack=0;
+	
+//case-3 load from pram
+	
+	size_select = 2'b00; // Set size_select to 1 (32-bit)
+        instr_fetch_enable = 0; // Enable instruction fetch
+        //instr_addr[31:0] = 4006; // Set instruction address to 0
+        ls_addr[31:0] = 0000; // Set load/store address to 0
+        //ls_write_data = 32'h00000000; // Set load/store write data to 0
+        ls_mem_access = 1; // Access pram
+        wr_en = 0; // Disable write
+        rd_en = 1; // Enable read
+	#5;
+	pram_read_data=123;   // check ls_read data
+        //addr_counter = 16'h0000; // Set address counter to 0
+        //load_when_reset = 1; // Enable load when reset
+        #5; // Wait for some time
+
+	
+//case-4 load from bus
+	
+	size_select = 2'b00; // Set size_select to 1 (32-bit)
+        instr_fetch_enable = 0; // Enable instruction fetch
+        //instr_addr[31:0] = 4006; // Set instruction address to 0
+        ls_addr = 32'h00004006; // Set load/store address to 0
+        //ls_write_data = 32'h00000000; // Set load/store write data to 0
+        ls_mem_access = 1; // Access pram
+        wr_en = 0; // Disable write
+        rd_en = 1; // Enable read
+	#15;
+	bus_read_data=999;   // check ls_read data
+        //addr_counter = 16'h0000; // Set address counter to 0
+        //load_when_reset = 0; // Enable load when reset
+        #5; // Wait for some time
+	
+//case-5 store to pram
+	
+	size_select = 2'b00; // Set size_select to 1 (32-bit)
+        instr_fetch_enable = 0; // Enable instruction fetch
+        //instr_addr[31:0] = 4006; // Set instruction address to 0
+        ls_addr = 32'h00000000; // Set load/store address to 0
+        ls_write_data = 10; // Set load/store write data to 0
+        ls_mem_access = 1; // Access pram
+        wr_en = 1; // Disable write
+        rd_en = 0; // Enable read
+	//bus_read_data=999;
+        //addr_counter = 16'h0000; // Set address counter to 0
+        load_when_reset = 0; // Enable load when reset
+	// check pram write dat is equal to ls_write data
+       #10; //#5; // Wait for some time 
+	
+//case-6 store to bus
+	
+	size_select = 2'b00; // Set size_select to 1 (32-bit)
+        instr_fetch_enable = 0; // Enable instruction fetch
+        //instr_addr[31:0] = 4006; // Set instruction address to 0
+        ls_addr = 32'h00004006; // Set load/store address to 0
+        ls_write_data = 15; // Set load/store write data to 0
+        ls_mem_access = 1; // Access pram
+        wr_en = 1; // Disable write
+        rd_en = 0; // Enable read
+	//bus_read_data=999;
+        //addr_counter = 16'h0000; // Set address counter to 0
+        load_when_reset = 0; // Enable load when reset
+	// check bus write data
+        #15; // Wait for some time
+	bus_ack=1;
+	#5;
+	bus_ack=0;
+		
+end
